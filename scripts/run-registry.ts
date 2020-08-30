@@ -116,12 +116,14 @@ const publish = (packages: { name: string; location: string }[], url: string) =>
       limit(
         () =>
           new Promise((res, rej) => {
+            console.time(`🛫 publishing ${name} (${location})`);
             logger.log(`🛫 publishing ${name} (${location})`);
             const command = `cd ${location} && npm publish --registry ${url} --force --access restricted`;
             exec(command, (e) => {
               if (e) {
                 rej(e);
               } else {
+                console.timeEnd(`🛫 publishing ${name} (${location})`);
                 logger.log(`🛬 successful publish of ${name}!`);
                 res();
               }
